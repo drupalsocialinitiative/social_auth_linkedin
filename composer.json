@@ -1,0 +1,12 @@
+{
+  "name": "drupal/social_auth_linkedin",
+  "type": "drupal-module",
+  "description": "Social Auth integration for LinkedIn",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/social_auth_linkedin",
+  "minimum-stability": "dev",
+  "require": {
+    "linkedinapi/linkedin": "~1.1"
+  }
+}
