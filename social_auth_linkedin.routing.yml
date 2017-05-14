@@ -9,7 +9,7 @@ social_auth_linkedin.settings_form:
 social_auth_linkedin.redirect_to_linkedin:
   path: 'user/login/linkedin'
   defaults:
-    _controller: 'Drupal\social_auth_linkedin\Controller\LinkedInAuthController::redirectToLinkedIn'
+    _controller: 'Drupal\social_auth_linkedin\Controller\LinkedinAuthController::redirectToLinkedIn'
   requirements:
     _role: 'anonymous'
   options:
@@ -18,7 +18,7 @@ social_auth_linkedin.redirect_to_linkedin:
 social_auth_linkedin.callback:
   path: '/user/login/linkedin/callback'
   defaults:
-    _controller: 'Drupal\social_auth_linkedin\Controller\LinkedInAuthController::callback'
+    _controller: 'Drupal\social_auth_linkedin\Controller\LinkedinAuthController::callback'
   requirements:
     _role: 'anonymous'
   options:
