@@ -36,6 +36,28 @@ Drupal site. If we have an existing Drupal user with the same email address
 provided by LinkedIn, that user is logged in. Otherwise a new Drupal user is
 created.
 
+CREATE LINKEDIN APPLICATION
+---------------
+
+Go to https://www.linkedin.com/developer/apps and create a new application. After creating it, make sure both r_basicprofile and r_emailaddress permissions are checked.
+
+The Client ID and Client Secret values will be required when configuring the module
+
+Your Oauth 2.0 authorized redirect url will be
+[your_base_url]/user/login/linkedin/callback
+
+
+INSTALL SOCIAL AUTH LINKEDIN
+-----------------------------
+
+Install module using composer to take care of dependencies
+
+composer require "drupal/social_auth_linkedin:~1.0"
+
+Activate the Social Auth LinkedIn module and configure the Client ID and Client Secret acquired using the values acquired from LinkedIn.
+
+The LinkedIn Auth button should now be appearing in the Social Auth Block
+
 
 SUPPORT REQUESTS
 ----------------
