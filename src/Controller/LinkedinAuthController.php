@@ -7,6 +7,7 @@ use Drupal\social_auth_linkedin\LinkedinAuthManager;
 use Drupal\social_api\Plugin\NetworkManager;
 use Drupal\social_auth\SocialAuthUserManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zend\Diactoros\Response\RedirectResponse;
 
@@ -14,6 +15,13 @@ use Zend\Diactoros\Response\RedirectResponse;
  * Manages requests to Linkedin API.
  */
 class LinkedinAuthController extends ControllerBase {
+
+  /**
+   * Request stack.
+   *
+   * @var RequestStack
+   */
+  public $request;
 
   /**
    * The network plugin manager.
@@ -55,7 +63,8 @@ class LinkedinAuthController extends ControllerBase {
    * @param SessionInterface $session
    *   Used to store the access token into a session variable.
    */
-  public function __construct(NetworkManager $network_manager, SocialAuthUserManager $user_manager, LinkedinAuthManager $linkedin_manager, SessionInterface $session) {
+  public function __construct(NetworkManager $network_manager, SocialAuthUserManager $user_manager, LinkedinAuthManager $linkedin_manager, SessionInterface $session, RequestStack $request) {
+    $this->request = $request;
     $this->networkManager = $network_manager;
     $this->userManager = $user_manager;
     $this->linkedinManager = $linkedin_manager;
@@ -74,7 +83,8 @@ class LinkedinAuthController extends ControllerBase {
       $container->get('plugin.network.manager'),
       $container->get('social_auth.user_manager'),
       $container->get('social_auth_linkedin.manager'),
-      $container->get('session')
+      $container->get('session'),
+      $container->get('request_stack')
     );
   }
 
@@ -102,6 +112,16 @@ class LinkedinAuthController extends ControllerBase {
    * Callback function to login user.
    */
   public function callback() {
+
+    $error = $this->request->getCurrentRequest()->get('error');
+    $error_description = $this->request->getCurrentRequest()->get('error');
+
+    if ($error) {
+
+      drupal_set_message($this->t('You could not be authenticated'), 'error');
+      return $this->redirect('user.login');
+    }
+
     /* @var \Linkedin_Client $client */
     $client = $this->networkManager->createInstance('social_auth_linkedin')->getSdk();
 

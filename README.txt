@@ -70,3 +70,15 @@ admin/reports/dblog
 
 When posting a support request, please inform if you were able to see any errors
 in Recent log entries.
+
+RUNNING TESTS
+-----------------
+
+Running PHPUnit tests
+
+cd core
+ ../vendor/bin/phpunit ../modules/contrib/social_auth_linkedin/tests/src/Unit/LinkedinAuthManagerTest.php
+
+Running Functional Tests
+
+php core/scripts/run-tests.sh --browser --verbose --class "Drupal\Tests\social_auth_linkedin\Functional\LinkedinAuthTest"
