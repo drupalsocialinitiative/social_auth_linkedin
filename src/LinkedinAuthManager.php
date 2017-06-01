@@ -4,7 +4,6 @@ namespace Drupal\social_auth_linkedin;
 
 use Drupal\social_auth\AuthManager\OAuth2Manager;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Linkedin_Service_Oauth2;
 
 /**
  * Manages the authentication requests.
@@ -21,7 +20,7 @@ class LinkedinAuthManager extends OAuth2Manager {
   /**
    * The Linkedin service client.
    *
-   * @var \Linkedin_Client
+   * @var \LinkedIn\LinkedIn
    */
   protected $client;
 

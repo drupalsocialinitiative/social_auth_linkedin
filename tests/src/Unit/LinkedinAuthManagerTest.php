@@ -34,7 +34,7 @@ class LinkedinAuthManagerTest extends UnitTestCase {
   /**
    * Linkedin Authentication manager.
    *
-   * @var LinkedinAuthManager
+   * @var \Drupal\social_auth_linkedin\LinkedinAuthManager
    */
   protected $linkedinManager;
 
@@ -68,8 +68,8 @@ class LinkedinAuthManagerTest extends UnitTestCase {
   /**
    * Sets \LinkedIn\LinkedIn object to LinkedinAuthManager.
    *
-   * @return LinkedinAuthManager
-   *    setClient() returns $this, the LinkedinAuthManager object.
+   * @return \Drupal\social_auth_linkedin\LinkedinAuthManager
+   *   setClient() returns $this, the LinkedinAuthManager object.
    */
   protected  function setClient() {
     return $this->linkedinManager->setClient($this->client);

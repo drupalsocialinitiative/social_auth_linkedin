@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Render\MetadataBubblingUrlGenerator;
 use Drupal\social_api\SocialApiException;
 use Drupal\social_auth\Plugin\Network\SocialAuthNetwork;
+use LinkedIn\LinkedIn;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -17,10 +18,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   social_network = "Linkedin",
  *   type = "social_auth",
  *   handlers = {
- *      "settings": {
- *          "class": "\Drupal\social_auth_linkedin\Settings\LinkedinAuthSettings",
- *          "config_id": "social_auth_linkedin.settings"
- *      }
+ *     "settings": {
+ *       "class": "\Drupal\social_auth_linkedin\Settings\LinkedinAuthSettings",
+ *       "config_id": "social_auth_linkedin.settings"
+ *     }
  *   }
  * )
  */
@@ -57,7 +58,7 @@ class LinkedinAuth extends SocialAuthNetwork {
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory.
@@ -81,16 +82,14 @@ class LinkedinAuth extends SocialAuthNetwork {
     $settings = $this->settings;
 
     // Gets the absolute url of the callback.
-    $redirect_uri = $this->urlGenerator->generateFromRoute('social_auth_linkedin.callback', array(), array('absolute' => TRUE));
+    $redirect_uri = $this->urlGenerator->generateFromRoute('social_auth_linkedin.callback', [], ['absolute' => TRUE]);
 
     // Creates a and sets data to Linkedin_Client object.
-    $client = new \LinkedIn\LinkedIn(
-      array(
-        'api_key' => $settings->getClientId(),
-        'api_secret' => $settings->getClientSecret(),
-        'callback_url' => $redirect_uri
-      )
-    );
+    $client = new LinkedIn([
+      'api_key' => $settings->getClientId(),
+      'api_secret' => $settings->getClientSecret(),
+      'callback_url' => $redirect_uri,
+    ]);
 
     return $client;
   }

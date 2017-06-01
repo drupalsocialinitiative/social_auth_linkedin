@@ -14,7 +14,7 @@ class LinkedinAuthSettingsForm extends SocialAuthSettingsForm {
    * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
-    return array_merge(array('social_auth_linkedin.settings'), parent::getEditableConfigNames());
+    return array_merge(['social_auth_linkedin.settings'], parent::getEditableConfigNames());
   }
 
   /**
@@ -30,27 +30,27 @@ class LinkedinAuthSettingsForm extends SocialAuthSettingsForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('social_auth_linkedin.settings');
 
-    $form['linkedin_settings'] = array(
+    $form['linkedin_settings'] = [
       '#type' => 'details',
       '#title' => $this->t('Linkedin Client settings'),
       '#open' => TRUE,
-    );
+    ];
 
-    $form['linkedin_settings']['client_id'] = array(
+    $form['linkedin_settings']['client_id'] = [
       '#type' => 'textfield',
       '#required' => TRUE,
       '#title' => $this->t('Client ID'),
       '#default_value' => $config->get('client_id'),
       '#description' => $this->t('Copy the Client ID here'),
-    );
+    ];
 
-    $form['linkedin_settings']['client_secret'] = array(
+    $form['linkedin_settings']['client_secret'] = [
       '#type' => 'textfield',
       '#required' => TRUE,
       '#title' => $this->t('Client Secret'),
       '#default_value' => $config->get('client_secret'),
       '#description' => $this->t('Copy the Client Secret here'),
-    );
+    ];
 
     return parent::buildForm($form, $form_state);
   }

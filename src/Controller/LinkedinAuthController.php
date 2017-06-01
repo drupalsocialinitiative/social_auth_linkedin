@@ -6,6 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\social_auth_linkedin\LinkedinAuthManager;
 use Drupal\social_api\Plugin\NetworkManager;
 use Drupal\social_auth\SocialAuthUserManager;
+use LinkedIn\LinkedIn;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -19,7 +20,7 @@ class LinkedinAuthController extends ControllerBase {
   /**
    * Request stack.
    *
-   * @var RequestStack
+   * @var \Symfony\Component\HttpFoundation\RequestStack
    */
   public $request;
 
@@ -60,17 +61,21 @@ class LinkedinAuthController extends ControllerBase {
    *   Manages user login/registration.
    * @param \Drupal\social_auth_linkedin\LinkedinAuthManager $linkedin_manager
    *   Used to manage authentication methods.
-   * @param SessionInterface $session
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request
+   *   Used to access GET parameters.
+   * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
    *   Used to store the access token into a session variable.
    */
-  public function __construct(NetworkManager $network_manager, SocialAuthUserManager $user_manager, LinkedinAuthManager $linkedin_manager, SessionInterface $session, RequestStack $request) {
+  public function __construct(NetworkManager $network_manager, SocialAuthUserManager $user_manager, LinkedinAuthManager $linkedin_manager, RequestStack $request, SessionInterface $session) {
     $this->request = $request;
     $this->networkManager = $network_manager;
     $this->userManager = $user_manager;
     $this->linkedinManager = $linkedin_manager;
     $this->session = $session;
+
     // Sets the plugin id.
     $this->userManager->setPluginId('social_auth_linkedin');
+
     // Sets the session keys to nullify if user could not logged in.
     $this->userManager->setSessionKeysToNullify(['social_auth_linkedin_access_token']);
   }
@@ -83,8 +88,8 @@ class LinkedinAuthController extends ControllerBase {
       $container->get('plugin.network.manager'),
       $container->get('social_auth.user_manager'),
       $container->get('social_auth_linkedin.manager'),
-      $container->get('session'),
-      $container->get('request_stack')
+      $container->get('request_stack'),
+      $container->get('session')
     );
   }
 
@@ -95,15 +100,13 @@ class LinkedinAuthController extends ControllerBase {
    *   Redirection to Linkedin Accounts.
    */
   public function redirectToLinkedin() {
-    /* @var \Linkedin_Client $client */
+    /* @var \LinkedIn\LinkedIn $client */
     $client = $this->networkManager->createInstance('social_auth_linkedin')->getSdk();
 
-    $url = $client->getLoginUrl(
-      array(
-        \Linkedin\LinkedIn::SCOPE_BASIC_PROFILE,
-        \Linkedin\LinkedIn::SCOPE_EMAIL_ADDRESS,
-      )
-    );
+    $url = $client->getLoginUrl([
+      LinkedIn::SCOPE_BASIC_PROFILE,
+      LinkedIn::SCOPE_EMAIL_ADDRESS,
+    ]);
 
     return new RedirectResponse($url);
   }
@@ -114,15 +117,13 @@ class LinkedinAuthController extends ControllerBase {
   public function callback() {
 
     $error = $this->request->getCurrentRequest()->get('error');
-    $error_description = $this->request->getCurrentRequest()->get('error');
 
     if ($error) {
-
-      drupal_set_message($this->t('You could not be authenticated'), 'error');
+      drupal_set_message($this->t('You could not be authenticated.'), 'error');
       return $this->redirect('user.login');
     }
 
-    /* @var \Linkedin_Client $client */
+    /* @var \Linkedin\LinkedIn $client */
     $client = $this->networkManager->createInstance('social_auth_linkedin')->getSdk();
 
     $this->linkedinManager->setClient($client)->authenticate();
@@ -133,15 +134,12 @@ class LinkedinAuthController extends ControllerBase {
     // Gets user information.
     $user = $this->linkedinManager->getUserInfo();
 
-    //echo '<pre>'.print_r($user, true);
-    //die();
     // If user information could be retrieved.
     if ($user) {
-      $picture = (isset($user['pictureUrls']['values'][0]))?$user['pictureUrls']['values'][0]:false;
+      $picture = (isset($user['pictureUrls']['values'][0])) ? $user['pictureUrls']['values'][0] : FALSE;
 
-      return $this->userManager->authenticateUser($user['emailAddress'],
-        $user['firstName'].' '.$user['lastName'],
-        $user['id'], $picture);
+      $fullname = $user['firstName'] . ' ' . $user['lastName'];
+      return $this->userManager->authenticateUser($user['emailAddress'], $fullname, $user['id'], $picture);
     }
 
     drupal_set_message($this->t('You could not be authenticated, please contact the administrator'), 'error');

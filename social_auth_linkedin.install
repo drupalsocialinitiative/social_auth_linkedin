@@ -18,7 +18,7 @@ function social_auth_linkedin_requirements($phase) {
   \Drupal::service('module_installer')->install(['social_api']);
 
   if ($phase == 'install') {
-    $requirements = SocialApiImplementerInstaller::checkLibrary('social_auth_linkedin', 'Social Auth Linkedin', 'linkedinapi/linkedin', '1.1.0.0','2.0.0.0');
+    $requirements = SocialApiImplementerInstaller::checkLibrary('social_auth_linkedin', 'Social Auth Linkedin', 'linkedinapi/linkedin', '1.1.0.0', '2.0.0.0');
   }
 
   return $requirements;
