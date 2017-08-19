@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\social_auth_instagram;
+namespace Drupal\social_auth_linkedin;
 
 use Drupal\social_auth\AuthManager\OAuth2Manager;
 use Drupal\Core\Config\ConfigFactory;
@@ -10,9 +10,9 @@ use Drupal\Core\Routing\UrlGeneratorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Contains all the logic for Instagram login integration.
+ * Contains all the logic for Linkedin login integration.
  */
-class InstagramAuthManager extends OAuth2Manager {
+class LinkedinAuthManager extends OAuth2Manager {
 
   /**
    * The logger channel.
@@ -43,22 +43,22 @@ class InstagramAuthManager extends OAuth2Manager {
   protected $urlGenerator;
 
   /**
-   * The Instagram client object.
+   * The Linkedin client object.
    *
-   * @var \League\OAuth2\Client\Provider\Instagram
+   * @var \League\OAuth2\Client\Provider\Linkedin
    */
   protected $client;
   /**
-   * The Instagram access token.
+   * The Linkedin access token.
    *
    * @var \League\OAuth2\Client\Token\AccessToken
    */
   protected $token;
 
   /**
-   * The Instagram user.
+   * The Linkedin user.
    *
-   * @var \League\OAuth2\Client\Provider\InstagramUser
+   * @var \League\OAuth2\Client\Provider\LinkedinUser
    */
   protected $user;
 
@@ -70,7 +70,7 @@ class InstagramAuthManager extends OAuth2Manager {
   protected $scopes;
 
   /**
-   * Social Auth Instagram Settings.
+   * Social Auth Linkedin Settings.
    *
    * @var array
    */
@@ -96,7 +96,7 @@ class InstagramAuthManager extends OAuth2Manager {
     $this->eventDispatcher    = $event_dispatcher;
     $this->entityFieldManager = $entity_field_manager;
     $this->urlGenerator       = $url_generator;
-    $this->config             = $configFactory->getEditable('social_auth_instagram.settings');
+    $this->config             = $configFactory->getEditable('social_auth_linkedin.settings');
   }
 
   /**
@@ -113,8 +113,8 @@ class InstagramAuthManager extends OAuth2Manager {
   /**
    * Gets the data by using the access token returned.
    *
-   * @return League\OAuth2\Client\Provider\InstagramUser
-   *   User info returned by the Instagram.
+   * @return League\OAuth2\Client\Provider\LinkedinUser
+   *   User info returned by the Linkedin.
    */
   public function getUserInfo() {
     $this->user = $this->client->getResourceOwner($this->token);
@@ -129,23 +129,34 @@ class InstagramAuthManager extends OAuth2Manager {
    */
   public function getExtraDetails($url) {
     if($url) {
-      $httpRequest = $this->client->getAuthenticatedRequest('GET', $url, $this->token, []);
-      $data = $this->client->getResponse($httpRequest);
-      return json_decode($data->getBody(), true);
+      $baseUrl = 'https://api.linkedin.com/v1';
+      $params  = 'oauth2_access_token=' . $this->token;
+      $response = file_get_contents($baseUrl . $url . '/?' . $params);
+      return json_decode($response, TRUE);
     }
   }
 
   /**
-   * Returns the Instagram login URL where user will be redirected.
+   * Returns token generated after authorization.
    *
    * @return string
-   *   Absolute Instagram login URL where user will be redirected
+   *   Used for making API calls.
    */
-  public function getInstagramLoginUrl() {
-    $scopes = [];
+  public function getAccessToken() {
+    return $this->token;
+  }
 
-    $instagram_scopes = explode(',', $this->getScopes());
-    foreach ($instagram_scopes as $scope) {
+  /**
+   * Returns the Linkedin login URL where user will be redirected.
+   *
+   * @return string
+   *   Absolute Linkedin login URL where user will be redirected
+   */
+  public function getLinkedinLoginUrl() {
+    $scopes = ['r_basicprofile'];
+
+    $linkedin_scopes = explode(PHP_EOL, $this->getScopes());
+    foreach ($linkedin_scopes as $scope) {
       array_push($scopes, $scope);
     }
 
@@ -164,10 +175,10 @@ class InstagramAuthManager extends OAuth2Manager {
   }
 
   /**
-   * Returns the Instagram login URL where user will be redirected.
+   * Returns the Linkedin login URL where user will be redirected.
    *
    * @return string
-   *   Absolute Instagram login URL where user will be redirected
+   *   Absolute Linkedin login URL where user will be redirected
    */
   public function getState() {
     $state = $this->client->getState();

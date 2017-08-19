@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\social_auth_instagram\Settings;
+namespace Drupal\social_auth_linkedin\Settings;
 
 /**
- * Defines an interface for Social Auth Instagram settings.
+ * Defines an interface for Social Auth Linkedin settings.
  */
-interface InstagramAuthSettingsInterface {
+interface LinkedinAuthSettingsInterface {
 
   /**
    * Gets the client ID.

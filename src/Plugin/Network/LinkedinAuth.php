@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\social_auth_instagram\Plugin\Network;
+namespace Drupal\social_auth_linkedin\Plugin\Network;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -9,29 +9,29 @@ use Drupal\Core\Routing\RequestContext;
 use Drupal\social_auth\SocialAuthDataHandler;
 use Drupal\social_api\Plugin\NetworkBase;
 use Drupal\social_api\SocialApiException;
-use Drupal\social_auth_instagram\Settings\InstagramAuthSettings;
+use Drupal\social_auth_linkedin\Settings\LinkedinAuthSettings;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use League\OAuth2\Client\Provider\Instagram;
+use League\OAuth2\Client\Provider\Linkedin;
 use Drupal\Core\Site\Settings;
 
 /**
- * Defines a Network Plugin for Social Auth Instagram.
+ * Defines a Network Plugin for Social Auth Linkedin.
  *
- * @package Drupal\simple_instagram_connect\Plugin\Network
+ * @package Drupal\simple_linkedin_connect\Plugin\Network
  *
  * @Network(
- *   id = "social_auth_instagram",
- *   social_network = "Instagram",
+ *   id = "social_auth_linkedin",
+ *   social_network = "Linkedin",
  *   type = "social_auth",
  *   handlers = {
  *     "settings": {
- *       "class": "\Drupal\social_auth_instagram\Settings\InstagramAuthSettings",
- *       "config_id": "social_auth_instagram.settings"
+ *       "class": "\Drupal\social_auth_linkedin\Settings\LinkedinAuthSettings",
+ *       "config_id": "social_auth_linkedin.settings"
  *     }
  *   }
  * )
  */
-class InstagramAuth extends NetworkBase implements InstagramAuthInterface {
+class LinkedinAuth extends NetworkBase implements LinkedinAuthInterface {
 
   /**
    * The Social Auth Data Handler.
@@ -79,7 +79,7 @@ class InstagramAuth extends NetworkBase implements InstagramAuthInterface {
   }
 
   /**
-   * InstagramAuth constructor.
+   * LinkedinAuth constructor.
    *
    * @param \Drupal\social_auth\SocialAuthDataHandler $data_handler
    *   The data handler.
@@ -122,7 +122,7 @@ class InstagramAuth extends NetworkBase implements InstagramAuthInterface {
   /**
    * Sets the underlying SDK library.
    *
-   * @return \League\OAuth2\Client\Provider\Instagram
+   * @return \League\OAuth2\Client\Provider\Linkedin
    *   The initialized 3rd party library instance.
    *
    * @throws SocialApiException
@@ -130,11 +130,11 @@ class InstagramAuth extends NetworkBase implements InstagramAuthInterface {
    */
   protected function initSdk() {
 
-    $class_name = '\League\OAuth2\Client\Provider\Instagram';
+    $class_name = '\League\OAuth2\Client\Provider\LinkedIn';
     if (!class_exists($class_name)) {
-      throw new SocialApiException(sprintf('The Instagram Library for the league oAuth not found. Class: %s.', $class_name));
+      throw new SocialApiException(sprintf('The Linkedin Library for the league oAuth not found. Class: %s.', $class_name));
     }
-    /* @var \Drupal\social_auth_instagram\Settings\InstagramAuthSettings $settings */
+    /* @var \Drupal\social_auth_linkedin\Settings\LinkedinAuthSettings $settings */
     $settings = $this->settings;
     // Proxy configuration data for outward proxy.
     $proxyUrl = $this->siteSettings->get("http_client_config")["proxy"]["http"];
@@ -144,7 +144,7 @@ class InstagramAuth extends NetworkBase implements InstagramAuthInterface {
         $league_settings = [
           'clientId' => $settings->getClientId(),
           'clientSecret' => $settings->getClientSecret(),
-          'redirectUri' => $this->requestContext->getCompleteBaseUrl() . '/user/login/instagram/callback',
+          'redirectUri' => $this->requestContext->getCompleteBaseUrl() . '/user/login/linkedin/callback',
           'accessType' => 'offline',
           'verify' => FALSE,
           'proxy' => $proxyUrl,
@@ -154,13 +154,13 @@ class InstagramAuth extends NetworkBase implements InstagramAuthInterface {
         $league_settings = [
           'clientId' => $settings->getClientId(),
           'clientSecret' => $settings->getClientSecret(),
-          'redirectUri' => $this->requestContext->getCompleteBaseUrl() . '/user/login/instagram/callback',
+          'redirectUri' => $this->requestContext->getCompleteBaseUrl() . '/user/login/linkedin/callback',
           'accessType' => 'offline',
           'verify' => FALSE,
         ];
       }
 
-      return new Instagram($league_settings);
+      return new Linkedin($league_settings);
     }
     return FALSE;
   }
@@ -168,19 +168,19 @@ class InstagramAuth extends NetworkBase implements InstagramAuthInterface {
   /**
    * Checks that module is configured.
    *
-   * @param \Drupal\social_auth_instagram\Settings\InstagramAuthSettings $settings
-   *   The Instagram auth settings.
+   * @param \Drupal\social_auth_linkedin\Settings\LinkedinAuthSettings $settings
+   *   The Linkedin auth settings.
    *
    * @return bool
    *   True if module is configured.
    *   False otherwise.
    */
-  protected function validateConfig(InstagramAuthSettings $settings) {
+  protected function validateConfig(LinkedinAuthSettings $settings) {
     $client_id = $settings->getClientId();
     $client_secret = $settings->getClientSecret();
     if (!$client_id || !$client_secret) {
       $this->loggerFactory
-        ->get('social_auth_instagram')
+        ->get('social_auth_linkedin')
         ->error('Define Client ID and Client Secret on module settings.');
       return FALSE;
     }

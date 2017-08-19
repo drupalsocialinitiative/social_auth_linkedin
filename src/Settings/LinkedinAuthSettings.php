@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\social_auth_instagram\Settings;
+namespace Drupal\social_auth_linkedin\Settings;
 
 use Drupal\social_api\Settings\SettingsBase;
 
 /**
- * Defines methods to get Social Auth Instagram settings.
+ * Defines methods to get Social Auth Linkedin settings.
  */
-class InstagramAuthSettings extends SettingsBase implements InstagramAuthSettingsInterface {
+class LinkedinAuthSettings extends SettingsBase implements LinkedinAuthSettingsInterface {
 
   /**
    * Client ID.

@@ -14,7 +14,7 @@ CONTENTS OF THIS FILE
 INTRODUCTION
 ------------
 
-Social Auth Instagram Module is a Instagram Authentication integration for Drupal.
+Social Auth Linkedin Module is a Linkedin Authentication integration for Drupal.
 
 REQUIREMENTS
 ------------
@@ -29,14 +29,14 @@ RECOMMENDED MODULES
 -------------------
 
  * Composer Manager (https://www.drupal.org/project/composer_manager):
-   This module will help to install the League PHP library and Instagram base library for the league,
+   This module will help to install the League PHP library and Linkedin base library for the league,
    which are the libraries required to make user authentication.
 
 INSTALLATION
 ------------
 
- * Download Instagram Base Library for TheLeague OAuth2 PHP library
-   (https://github.com/thephpleague/oauth2-instagram). We recommend to use
+ * Download Linkedin Base Library for TheLeague OAuth2 PHP library
+   (https://github.com/thephpleague/oauth2-linkedin). We recommend to use
    Composer Manager module to install the library.
 
  * Install the dependencies: Social API and Social Auth.
@@ -48,10 +48,10 @@ INSTALLATION
 CONFIGURATION
 -------------
 
- * Add your Instagram project OAuth information in
-   Configuration » User Authentication » Instagram.
+ * Add your Linkedin project OAuth information in
+   Configuration » User Authentication » Linkedin.
 
- * Place a Social Auth Instagram block in Structure » Block Layout.
+ * Place a Social Auth Linkedin block in Structure » Block Layout.
 
  * If you already have a Social Auth Login block in the site, rebuild the cache.
 
@@ -59,15 +59,15 @@ CONFIGURATION
 HOW IT WORKS
 ------------
 
-User can click on the Instagram logo on the Social Auth Login block
+User can click on the Linkedin logo on the Social Auth Login block
 You can also add a button or link anywhere on the site that points
-to /user/login/instagram, so theming and customizing the button or link
+to /user/login/linkedin, so theming and customizing the button or link
 is very flexible.
 
-When the user opens the /user/login/instagram link, it automatically takes
-user to Instagram Accounts for authentication. Instagram then returns the user to
+When the user opens the /user/login/linkedin link, it automatically takes
+user to Linkedin Accounts for authentication. Linkedin then returns the user to
 Drupal site. If we have an existing Drupal user with the same email address
-provided by Instagram, that user is logged in. Otherwise a new Drupal user is
+provided by Linkedin, that user is logged in. Otherwise a new Drupal user is
 created.
 
 SUPPORT REQUESTS
@@ -77,7 +77,7 @@ Before posting a support request, carefully read the installation
 instructions provided in module documentation page.
 
 Before posting a support request, check Composer Manager status report at
-admin/reports/composer-manager. This status page will show the Instagram The League OAuth2 Base
+admin/reports/composer-manager. This status page will show the Linkedin The League OAuth2 Base
 PHP library version if Drupal can detect it.
 
 Before posting a support request, check Recent log entries at

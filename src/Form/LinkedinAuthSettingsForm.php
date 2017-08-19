@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\social_auth_instagram\Form;
+namespace Drupal\social_auth_linkedin\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -11,9 +11,9 @@ use Drupal\social_auth\Form\SocialAuthSettingsForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Settings form for Social Auth Instagram.
+ * Settings form for Social Auth Linkedin.
  */
-class InstagramAuthSettingsForm extends SocialAuthSettingsForm {
+class LinkedinAuthSettingsForm extends SocialAuthSettingsForm {
 
   /**
    * The request context.
@@ -57,7 +57,7 @@ class InstagramAuthSettingsForm extends SocialAuthSettingsForm {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'social_auth_instagram_settings';
+    return 'social_auth_linkedin_settings';
   }
 
   /**
@@ -66,7 +66,7 @@ class InstagramAuthSettingsForm extends SocialAuthSettingsForm {
   protected function getEditableConfigNames() {
     return array_merge(
       parent::getEditableConfigNames(),
-      ['social_auth_instagram.settings']
+      ['social_auth_linkedin.settings']
     );
   }
 
@@ -74,16 +74,16 @@ class InstagramAuthSettingsForm extends SocialAuthSettingsForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('social_auth_instagram.settings');
+    $config = $this->config('social_auth_linkedin.settings');
 
-    $form['instagram_settings'] = [
+    $form['linkedin_settings'] = [
       '#type' => 'details',
-      '#title' => $this->t('Instagram Client settings'),
+      '#title' => $this->t('Linkedin Client settings'),
       '#open' => TRUE,
-      '#description' => $this->t('You need to first create a Instagram App at <a href="@instagram-dev">@instagram-dev</a>', ['@instagram-dev' => 'https://developers.instagram.com/apps']),
+      '#description' => $this->t('You need to first create a Linkedin App at <a href="@linkedin-dev">@linkedin-dev</a>', ['@linkedin-dev' => 'https://developers.linkedin.com/apps']),
     ];
 
-    $form['instagram_settings']['client_id'] = [
+    $form['linkedin_settings']['client_id'] = [
       '#type' => 'textfield',
       '#required' => TRUE,
       '#title' => $this->t('Client ID'),
@@ -91,7 +91,7 @@ class InstagramAuthSettingsForm extends SocialAuthSettingsForm {
       '#description' => $this->t('Copy the Client ID here.'),
     ];
 
-    $form['instagram_settings']['client_secret'] = [
+    $form['linkedin_settings']['client_secret'] = [
       '#type' => 'textfield',
       '#required' => TRUE,
       '#title' => $this->t('Client Secret'),
@@ -99,30 +99,30 @@ class InstagramAuthSettingsForm extends SocialAuthSettingsForm {
       '#description' => $this->t('Copy the Client Secret here.'),
     ];
 
-    $form['instagram_settings']['authorized_redirect_url'] = [
+    $form['linkedin_settings']['authorized_redirect_url'] = [
       '#type' => 'textfield',
       '#disabled' => TRUE,
       '#title' => $this->t('Authorized redirect URIs'),
-      '#description' => $this->t('Copy this value to <em>Authorized redirect URIs</em> field of your Instagram App settings.'),
-      '#default_value' => $GLOBALS['base_url'] . '/user/login/instagram/callback',
+      '#description' => $this->t('Copy this value to <em>Authorized redirect URIs</em> field of your Linkedin App settings.'),
+      '#default_value' => $GLOBALS['base_url'] . '/user/login/linkedin/callback',
     ];
 
-    $form['instagram_settings']['authorized_javascript_origin'] = [
+    $form['linkedin_settings']['authorized_javascript_origin'] = [
       '#type' => 'textfield',
       '#disabled' => TRUE,
       '#title' => $this->t('Authorized Javascript Origin'),
-      '#description' => $this->t('Copy this value to <em>Authorized Javascript Origins</em> field of your Instagram App settings.'),
+      '#description' => $this->t('Copy this value to <em>Authorized Javascript Origins</em> field of your Linkedin App settings.'),
       '#default_value' => $this->requestContext->getHost(),
     ];
 
-    $form['instagram_settings']['scopes'] = [
+    $form['linkedin_settings']['scopes'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Scopes for API call'),
       '#default_value' => $config->get('scopes'),
       '#description' => $this->t('Define the requested scopes to make API calls.'),
     ];
 
-    $form['instagram_settings']['api_calls'] = [
+    $form['linkedin_settings']['api_calls'] = [
       '#type' => 'textarea',
       '#title' => $this->t('API calls to be made to collect data'),
       '#default_value' => $config->get('api_calls'),
@@ -137,7 +137,7 @@ class InstagramAuthSettingsForm extends SocialAuthSettingsForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
-    $this->config('social_auth_instagram.settings')
+    $this->config('social_auth_linkedin.settings')
       ->set('client_id', $values['client_id'])
       ->set('client_secret', $values['client_secret'])
       ->set('scopes', $values['scopes'])
