@@ -80,7 +80,7 @@ class LinkedinAuthSettingsForm extends SocialAuthSettingsForm {
       '#type' => 'details',
       '#title' => $this->t('Linkedin Client settings'),
       '#open' => TRUE,
-      '#description' => $this->t('You need to first create a Linkedin App at <a href="@linkedin-dev">@linkedin-dev</a>', ['@linkedin-dev' => 'https://developers.linkedin.com/apps']),
+      '#description' => $this->t('You need to first create a Linkedin App at <a href="@linkedin-dev">@linkedin-dev</a>', ['@linkedin-dev' => 'https://www.linkedin.com/secure/developer?newapp=']),
     ];
 
     $form['linkedin_settings']['client_id'] = [

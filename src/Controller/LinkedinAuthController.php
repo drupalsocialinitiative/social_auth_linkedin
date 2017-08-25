@@ -193,6 +193,6 @@ class LinkedinAuthController extends ControllerBase {
       }
     }
     // If user information could be retrieved.
-    return $this->userManager->authenticateUser($linkedin_profile->getFirstName() . ' ' . $linkedin_profile->getLastName(), $linkedin_profile->getEmail(), 'social_auth_linkedin', $linkedin_profile->getId(), $linkedin_profile->getImageurl(), json_encode($data));
+    return $this->userManager->authenticateUser($linkedin_profile->getFirstName() . ' ' . $linkedin_profile->getLastName(), $linkedin_profile->getEmail(), $linkedin_profile->getId(),$this->linkedinManager->getAccessToken(), $linkedin_profile->getImageurl(), json_encode($data));
   }
 }
