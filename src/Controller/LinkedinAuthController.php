@@ -182,7 +182,8 @@ class LinkedinAuthController extends ControllerBase {
 
     // Store the data mapped with data points define is
     // social_auth_linkedin settings.
-    $data = [];
+    $data = $linkedin_profile->toArray();
+
     if (!$this->userManager->checkIfUserExists($linkedin_profile->getId())) {
       $api_calls = explode(PHP_EOL, $this->linkedinManager->getAPICalls());
 
