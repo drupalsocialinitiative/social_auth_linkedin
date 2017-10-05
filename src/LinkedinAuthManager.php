@@ -58,7 +58,7 @@ class LinkedinAuthManager extends OAuth2Manager {
   /**
    * The Linkedin user.
    *
-   * @var \League\OAuth2\Client\Provider\LinkedinUser
+   * @var \League\OAuth2\Client\Provider\LinkedInResourceOwner
    */
   protected $user;
 

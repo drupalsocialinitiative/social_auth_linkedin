@@ -11,7 +11,7 @@ use Drupal\social_api\Plugin\NetworkBase;
 use Drupal\social_api\SocialApiException;
 use Drupal\social_auth_linkedin\Settings\LinkedinAuthSettings;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use League\OAuth2\Client\Provider\Linkedin;
+use League\OAuth2\Client\Provider\LinkedIn;
 use Drupal\Core\Site\Settings;
 
 /**
@@ -136,31 +136,26 @@ class LinkedinAuth extends NetworkBase implements LinkedinAuthInterface {
     }
     /* @var \Drupal\social_auth_linkedin\Settings\LinkedinAuthSettings $settings */
     $settings = $this->settings;
-    // Proxy configuration data for outward proxy.
-    $proxyUrl = $this->siteSettings->get("http_client_config")["proxy"]["http"];
+
     if ($this->validateConfig($settings)) {
       // All these settings are mandatory.
+      $league_settings = [
+        'clientId' => $settings->getClientId(),
+        'clientSecret' => $settings->getClientSecret(),
+        'redirectUri' => $this->requestContext->getCompleteBaseUrl() . '/user/login/linkedin/callback',
+        'accessType' => 'offline',
+        'verify' => FALSE,
+      ];
+
+      // Proxy configuration data for outward proxy.
+      $proxyUrl = $this->siteSettings->get("http_client_config")["proxy"]["http"];
       if ($proxyUrl) {
         $league_settings = [
-          'clientId' => $settings->getClientId(),
-          'clientSecret' => $settings->getClientSecret(),
-          'redirectUri' => $this->requestContext->getCompleteBaseUrl() . '/user/login/linkedin/callback',
-          'accessType' => 'offline',
-          'verify' => FALSE,
           'proxy' => $proxyUrl,
         ];
       }
-      else {
-        $league_settings = [
-          'clientId' => $settings->getClientId(),
-          'clientSecret' => $settings->getClientSecret(),
-          'redirectUri' => $this->requestContext->getCompleteBaseUrl() . '/user/login/linkedin/callback',
-          'accessType' => 'offline',
-          'verify' => FALSE,
-        ];
-      }
 
-      return new Linkedin($league_settings);
+      return new LinkedIn($league_settings);
     }
     return FALSE;
   }
