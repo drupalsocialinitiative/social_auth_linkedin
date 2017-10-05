@@ -165,7 +165,7 @@ class LinkedinAuthController extends ControllerBase {
     $retrievedState = $this->request->getCurrentRequest()->query->get('state');
     if (empty($retrievedState) || ($retrievedState !== $state)) {
       $this->userManager->nullifySessionKeys();
-      drupal_set_message($this->t('Linkedin login failed. Unvalid oAuth2 State.'), 'error');
+      drupal_set_message($this->t('Linkedin login failed. Unvalid OAuth2 State.'), 'error');
       return $this->redirect('user.login');
     }
 
@@ -185,7 +185,7 @@ class LinkedinAuthController extends ControllerBase {
     $data = $linkedin_profile->toArray();
 
     if (!$this->userManager->checkIfUserExists($linkedin_profile->getId())) {
-      $api_calls = explode(PHP_EOL, $this->linkedinManager->getAPICalls());
+      $api_calls = explode(PHP_EOL, $this->linkedinManager->getApiCalls());
 
       // Iterate through api calls define in settings and try to retrieve them.
       foreach ($api_calls as $api_call) {
@@ -194,6 +194,7 @@ class LinkedinAuthController extends ControllerBase {
       }
     }
     // If user information could be retrieved.
-    return $this->userManager->authenticateUser($linkedin_profile->getFirstName() . ' ' . $linkedin_profile->getLastName(), $linkedin_profile->getEmail(), $linkedin_profile->getId(),$this->linkedinManager->getAccessToken(), $linkedin_profile->getImageurl(), json_encode($data));
+    return $this->userManager->authenticateUser($linkedin_profile->getFirstName() . ' ' . $linkedin_profile->getLastName(), $linkedin_profile->getEmail(), $linkedin_profile->getId(), $this->linkedinManager->getAccessToken(), $linkedin_profile->getImageurl(), json_encode($data));
   }
+
 }

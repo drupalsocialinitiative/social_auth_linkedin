@@ -63,6 +63,13 @@ class LinkedinAuthManager extends OAuth2Manager {
   protected $user;
 
   /**
+   * The config factory object.
+   *
+   * @var \Drupal\Core\Config\ConfigFactory
+   */
+  protected $config;
+
+  /**
    * The data point to be collected.
    *
    * @var string
@@ -75,7 +82,6 @@ class LinkedinAuthManager extends OAuth2Manager {
    * @var array
    */
   protected $settings;
-
 
   /**
    * Constructor.
@@ -91,7 +97,12 @@ class LinkedinAuthManager extends OAuth2Manager {
    * @param \Drupal\Core\Config\ConfigFactory $configFactory
    *   Used for accessing configuration object factory.
    */
-  public function __construct(LoggerChannelFactoryInterface $logger_factory, EventDispatcherInterface $event_dispatcher, EntityFieldManagerInterface $entity_field_manager, UrlGeneratorInterface $url_generator, ConfigFactory $configFactory) {
+  public function __construct(LoggerChannelFactoryInterface $logger_factory,
+                              EventDispatcherInterface $event_dispatcher,
+                              EntityFieldManagerInterface $entity_field_manager,
+                              UrlGeneratorInterface $url_generator,
+                              ConfigFactory $configFactory) {
+
     $this->loggerFactory      = $logger_factory;
     $this->eventDispatcher    = $event_dispatcher;
     $this->entityFieldManager = $entity_field_manager;
@@ -101,9 +112,6 @@ class LinkedinAuthManager extends OAuth2Manager {
 
   /**
    * Authenticates the users by using the access token.
-   *
-   * @return $this
-   *   The current object.
    */
   public function authenticate() {
     $this->token = $this->client->getAccessToken('authorization_code',
@@ -113,7 +121,7 @@ class LinkedinAuthManager extends OAuth2Manager {
   /**
    * Gets the data by using the access token returned.
    *
-   * @return League\OAuth2\Client\Provider\LinkedinUser
+   * @return \League\OAuth2\Client\Provider\LinkedInResourceOwner
    *   User info returned by the Linkedin.
    */
   public function getUserInfo() {
@@ -124,16 +132,19 @@ class LinkedinAuthManager extends OAuth2Manager {
   /**
    * Gets the data by using the access token returned.
    *
-   * @return string
-   *   Data returned by Making API Call.
+   * @return string|false
+   *   Data returned by Making API Call
+   *   False if operation failed.
    */
   public function getExtraDetails($url) {
-    if($url) {
+    if ($url) {
       $baseUrl = 'https://api.linkedin.com/v1';
-      $params  = 'oauth2_access_token=' . $this->token;
+      $params = 'oauth2_access_token=' . $this->token;
       $response = file_get_contents($baseUrl . $url . '/?' . $params);
       return json_decode($response, TRUE);
     }
+
+    return FALSE;
   }
 
   /**
@@ -206,7 +217,7 @@ class LinkedinAuthManager extends OAuth2Manager {
    * @return string
    *   API calls separtated by comma.
    */
-  public function getAPICalls() {
+  public function getApiCalls() {
     return $this->config->get('api_calls');
   }
 

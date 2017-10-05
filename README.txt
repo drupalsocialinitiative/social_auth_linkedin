@@ -29,7 +29,8 @@ RECOMMENDED MODULES
 -------------------
 
  * Composer Manager (https://www.drupal.org/project/composer_manager):
-   This module will help to install the League PHP library and Linkedin base library for the league,
+   This module will help to install the League PHP library and Linkedin base
+   library for the league,
    which are the libraries required to make user authentication.
 
 INSTALLATION
@@ -77,7 +78,8 @@ Before posting a support request, carefully read the installation
 instructions provided in module documentation page.
 
 Before posting a support request, check Composer Manager status report at
-admin/reports/composer-manager. This status page will show the Linkedin The League OAuth2 Base
+admin/reports/composer-manager. This status page will show the Linkedin The
+League OAuth2 Base
 PHP library version if Drupal can detect it.
 
 Before posting a support request, check Recent log entries at
