@@ -1,20 +1,24 @@
-SOCIAL AUTH GOOGLE MODULE
-
 CONTENTS OF THIS FILE
 ---------------------
 
  * Introduction
  * Requirements
- * Recommended modules
  * Installation
  * Configuration
  * How it works
  * Support requests
+ * Maintainers
 
 INTRODUCTION
 ------------
 
-Social Auth Linkedin Module is a Linkedin Authentication integration for Drupal.
+Social Auth LinkedIn is a LinkedIn authentication integration for Drupal. It is
+based on the Social Auth and Social API projects
+
+It adds to the site:
+ * A new url: /user/login/linkedin.
+ * A settings form on /admin/config/social-api/social-auth/linkedin page.
+ * A LinkedIn logo in the Social Auth Login block.
 
 REQUIREMENTS
 ------------
@@ -24,21 +28,11 @@ This module requires the following modules:
  * Social Auth (https://drupal.org/project/social_auth)
  * Social API (https://drupal.org/project/social_api)
 
-
-RECOMMENDED MODULES
--------------------
-
- * Composer Manager (https://www.drupal.org/project/composer_manager):
-   This module will help to install the League PHP library and Linkedin base
-   library for the league,
-   which are the libraries required to make user authentication.
-
 INSTALLATION
 ------------
 
- * Download Linkedin Base Library for TheLeague OAuth2 PHP library
-   (https://github.com/thephpleague/oauth2-linkedin). We recommend to use
-   Composer Manager module to install the library.
+ * Run composer to install the dependencies:
+   composer require "drupal/social_auth_linkedin:~2.0"
 
  * Install the dependencies: Social API and Social Auth.
 
@@ -49,10 +43,10 @@ INSTALLATION
 CONFIGURATION
 -------------
 
- * Add your Linkedin project OAuth information in
-   Configuration » User Authentication » Linkedin.
+ * Add your LinkedIn project OAuth information in
+   Configuration » User Authentication » LinkedIn.
 
- * Place a Social Auth Linkedin block in Structure » Block Layout.
+ * Place a Social Auth LinkedIn block in Structure » Block Layout.
 
  * If you already have a Social Auth Login block in the site, rebuild the cache.
 
@@ -60,15 +54,15 @@ CONFIGURATION
 HOW IT WORKS
 ------------
 
-User can click on the Linkedin logo on the Social Auth Login block
+User can click on the LinkedIn logo on the Social Auth Login block
 You can also add a button or link anywhere on the site that points
 to /user/login/linkedin, so theming and customizing the button or link
 is very flexible.
 
 When the user opens the /user/login/linkedin link, it automatically takes
-user to Linkedin Accounts for authentication. Linkedin then returns the user to
+user to LinkedIn Accounts for authentication. LinkedIn then returns the user to
 Drupal site. If we have an existing Drupal user with the same email address
-provided by Linkedin, that user is logged in. Otherwise a new Drupal user is
+provided by LinkedIn, that user is logged in. Otherwise a new Drupal user is
 created.
 
 SUPPORT REQUESTS
@@ -77,19 +71,14 @@ SUPPORT REQUESTS
 Before posting a support request, carefully read the installation
 instructions provided in module documentation page.
 
-Before posting a support request, check Composer Manager status report at
-admin/reports/composer-manager. This status page will show the Linkedin The
-League OAuth2 Base
-PHP library version if Drupal can detect it.
-
 Before posting a support request, check Recent log entries at
 admin/reports/dblog
 
 Once you have done this, you can post a support request at module issue queue:
-https://www.drupal.org/node/2841076
+https://www.drupal.org/social_auth_linkedin/issues
 
 When posting a support request, please inform what does the status report say
-at admin/reports/composer-manager and if you were able to see any errors in
+at admin/reports/dblog and if you were able to see any errors in
 Recent log entries.
 
 MAINTAINERS
