@@ -9,29 +9,29 @@ use Drupal\Core\Routing\RequestContext;
 use Drupal\social_auth\SocialAuthDataHandler;
 use Drupal\social_api\Plugin\NetworkBase;
 use Drupal\social_api\SocialApiException;
-use Drupal\social_auth_linkedin\Settings\LinkedinAuthSettings;
+use Drupal\social_auth_linkedin\Settings\LinkedInAuthSettings;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use League\OAuth2\Client\Provider\LinkedIn;
 use Drupal\Core\Site\Settings;
 
 /**
- * Defines a Network Plugin for Social Auth Linkedin.
+ * Defines a Network Plugin for Social Auth LinkedIn.
  *
- * @package Drupal\simple_linkedin_connect\Plugin\Network
+ * @package Drupal\social_auth_linkedin\Plugin\Network
  *
  * @Network(
  *   id = "social_auth_linkedin",
- *   social_network = "Linkedin",
+ *   social_network = "LinkedIn",
  *   type = "social_auth",
  *   handlers = {
  *     "settings": {
- *       "class": "\Drupal\social_auth_linkedin\Settings\LinkedinAuthSettings",
+ *       "class": "\Drupal\social_auth_linkedin\Settings\LinkedInAuthSettings",
  *       "config_id": "social_auth_linkedin.settings"
  *     }
  *   }
  * )
  */
-class LinkedinAuth extends NetworkBase implements LinkedinAuthInterface {
+class LinkedInAuth extends NetworkBase implements LinkedInAuthInterface {
 
   /**
    * The Social Auth Data Handler.
@@ -79,7 +79,7 @@ class LinkedinAuth extends NetworkBase implements LinkedinAuthInterface {
   }
 
   /**
-   * LinkedinAuth constructor.
+   * LinkedInAuth constructor.
    *
    * @param \Drupal\social_auth\SocialAuthDataHandler $data_handler
    *   The data handler.
@@ -122,7 +122,7 @@ class LinkedinAuth extends NetworkBase implements LinkedinAuthInterface {
   /**
    * Sets the underlying SDK library.
    *
-   * @return \League\OAuth2\Client\Provider\Linkedin
+   * @return \League\OAuth2\Client\Provider\LinkedIn
    *   The initialized 3rd party library instance.
    *
    * @throws SocialApiException
@@ -132,9 +132,9 @@ class LinkedinAuth extends NetworkBase implements LinkedinAuthInterface {
 
     $class_name = '\League\OAuth2\Client\Provider\LinkedIn';
     if (!class_exists($class_name)) {
-      throw new SocialApiException(sprintf('The Linkedin Library for the league oAuth not found. Class: %s.', $class_name));
+      throw new SocialApiException(sprintf('The LinkedIn library for PHP League OAuth2 not found. Class: %s.', $class_name));
     }
-    /* @var \Drupal\social_auth_linkedin\Settings\LinkedinAuthSettings $settings */
+    /* @var \Drupal\social_auth_linkedin\Settings\LinkedInAuthSettings $settings */
     $settings = $this->settings;
 
     if ($this->validateConfig($settings)) {
@@ -163,20 +163,20 @@ class LinkedinAuth extends NetworkBase implements LinkedinAuthInterface {
   /**
    * Checks that module is configured.
    *
-   * @param \Drupal\social_auth_linkedin\Settings\LinkedinAuthSettings $settings
-   *   The Linkedin auth settings.
+   * @param \Drupal\social_auth_linkedin\Settings\LinkedInAuthSettings $settings
+   *   The LinkedIn auth settings.
    *
    * @return bool
    *   True if module is configured.
    *   False otherwise.
    */
-  protected function validateConfig(LinkedinAuthSettings $settings) {
+  protected function validateConfig(LinkedInAuthSettings $settings) {
     $client_id = $settings->getClientId();
     $client_secret = $settings->getClientSecret();
     if (!$client_id || !$client_secret) {
       $this->loggerFactory
         ->get('social_auth_linkedin')
-        ->error('Define Client ID and Client Secret on module settings.');
+        ->error('Define Client ID and Client Secret in module settings.');
       return FALSE;
     }
 

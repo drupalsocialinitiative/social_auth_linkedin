@@ -10,9 +10,9 @@ use Drupal\Core\Routing\UrlGeneratorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Contains all the logic for Linkedin login integration.
+ * Contains all the logic for LinkedIn login integration.
  */
-class LinkedinAuthManager extends OAuth2Manager {
+class LinkedInAuthManager extends OAuth2Manager {
 
   /**
    * The logger channel.
@@ -43,20 +43,20 @@ class LinkedinAuthManager extends OAuth2Manager {
   protected $urlGenerator;
 
   /**
-   * The Linkedin client object.
+   * The LinkedIn client object.
    *
-   * @var \League\OAuth2\Client\Provider\Linkedin
+   * @var \League\OAuth2\Client\Provider\LinkedIn
    */
   protected $client;
   /**
-   * The Linkedin access token.
+   * The LinkedIn access token.
    *
    * @var \League\OAuth2\Client\Token\AccessToken
    */
   protected $token;
 
   /**
-   * The Linkedin user.
+   * The LinkedIn user.
    *
    * @var \League\OAuth2\Client\Provider\LinkedInResourceOwner
    */
@@ -77,7 +77,7 @@ class LinkedinAuthManager extends OAuth2Manager {
   protected $scopes;
 
   /**
-   * Social Auth Linkedin Settings.
+   * Social Auth LinkedIn Settings.
    *
    * @var array
    */
@@ -122,7 +122,7 @@ class LinkedinAuthManager extends OAuth2Manager {
    * Gets the data by using the access token returned.
    *
    * @return \League\OAuth2\Client\Provider\LinkedInResourceOwner
-   *   User info returned by the Linkedin.
+   *   User info returned by the LinkedIn.
    */
   public function getUserInfo() {
     $this->user = $this->client->getResourceOwner($this->token);
@@ -158,12 +158,12 @@ class LinkedinAuthManager extends OAuth2Manager {
   }
 
   /**
-   * Returns the Linkedin login URL where user will be redirected.
+   * Returns the LinkedIn login URL where user will be redirected.
    *
    * @return string
-   *   Absolute Linkedin login URL where user will be redirected
+   *   Absolute LinkedIn login URL where user will be redirected
    */
-  public function getLinkedinLoginUrl() {
+  public function getLinkedInLoginUrl() {
     $scopes = ['r_basicprofile'];
 
     $linkedin_scopes = explode(PHP_EOL, $this->getScopes());
@@ -186,10 +186,10 @@ class LinkedinAuthManager extends OAuth2Manager {
   }
 
   /**
-   * Returns the Linkedin login URL where user will be redirected.
+   * Returns the LinkedIn login URL where user will be redirected.
    *
    * @return string
-   *   Absolute Linkedin login URL where user will be redirected
+   *   Absolute LinkedIn login URL where user will be redirected
    */
   public function getState() {
     $state = $this->client->getState();
@@ -202,7 +202,7 @@ class LinkedinAuthManager extends OAuth2Manager {
    * Gets the data Point defined the settings form page.
    *
    * @return string
-   *   Data points separtated by comma.
+   *   Data points separated by comma.
    */
   public function getScopes() {
     if (!$this->scopes) {
@@ -215,7 +215,7 @@ class LinkedinAuthManager extends OAuth2Manager {
    * Gets the API calls to collect data.
    *
    * @return string
-   *   API calls separtated by comma.
+   *   API calls separated by comma.
    */
   public function getApiCalls() {
     return $this->config->get('api_calls');

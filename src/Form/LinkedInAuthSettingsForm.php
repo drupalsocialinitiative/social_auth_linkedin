@@ -11,9 +11,9 @@ use Drupal\social_auth\Form\SocialAuthSettingsForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Settings form for Social Auth Linkedin.
+ * Settings form for Social Auth LinkedIn.
  */
-class LinkedinAuthSettingsForm extends SocialAuthSettingsForm {
+class LinkedInAuthSettingsForm extends SocialAuthSettingsForm {
 
   /**
    * The request context.
@@ -78,9 +78,9 @@ class LinkedinAuthSettingsForm extends SocialAuthSettingsForm {
 
     $form['linkedin_settings'] = [
       '#type' => 'details',
-      '#title' => $this->t('Linkedin Client settings'),
+      '#title' => $this->t('LinkedIn Client settings'),
       '#open' => TRUE,
-      '#description' => $this->t('You need to first create a Linkedin App at <a href="@linkedin-dev">@linkedin-dev</a>', ['@linkedin-dev' => 'https://www.linkedin.com/secure/developer?newapp=']),
+      '#description' => $this->t('You need to first create a LinkedIn App at <a href="@linkedin-dev">@linkedin-dev</a>', ['@linkedin-dev' => 'https://www.linkedin.com/secure/developer']),
     ];
 
     $form['linkedin_settings']['client_id'] = [
@@ -103,16 +103,8 @@ class LinkedinAuthSettingsForm extends SocialAuthSettingsForm {
       '#type' => 'textfield',
       '#disabled' => TRUE,
       '#title' => $this->t('Authorized redirect URIs'),
-      '#description' => $this->t('Copy this value to <em>Authorized redirect URIs</em> field of your Linkedin App settings.'),
+      '#description' => $this->t('Copy this value to <em>Authorized redirect URIs</em> field of your LinkedIn App settings.'),
       '#default_value' => $GLOBALS['base_url'] . '/user/login/linkedin/callback',
-    ];
-
-    $form['linkedin_settings']['authorized_javascript_origin'] = [
-      '#type' => 'textfield',
-      '#disabled' => TRUE,
-      '#title' => $this->t('Authorized Javascript Origin'),
-      '#description' => $this->t('Copy this value to <em>Authorized Javascript Origins</em> field of your Linkedin App settings.'),
-      '#default_value' => $this->requestContext->getHost(),
     ];
 
     $form['linkedin_settings']['scopes'] = [

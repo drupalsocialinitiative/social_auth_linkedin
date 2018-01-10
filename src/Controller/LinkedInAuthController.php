@@ -6,16 +6,16 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\social_api\Plugin\NetworkManager;
 use Drupal\social_auth\SocialAuthDataHandler;
 use Drupal\social_auth\SocialAuthUserManager;
-use Drupal\social_auth_linkedin\LinkedinAuthManager;
+use Drupal\social_auth_linkedin\LinkedInAuthManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 
 /**
- * Returns responses for Simple Linkedin Connect module routes.
+ * Returns responses for Simple LinkedIn Connect module routes.
  */
-class LinkedinAuthController extends ControllerBase {
+class LinkedInAuthController extends ControllerBase {
 
   /**
    * The network plugin manager.
@@ -34,9 +34,9 @@ class LinkedinAuthController extends ControllerBase {
   /**
    * The linkedin authentication manager.
    *
-   * @var \Drupal\social_auth_linkedin\LinkedinAuthManager
+   * @var \Drupal\social_auth_linkedin\LinkedInAuthManager
    */
-  private $linkedinManager;
+  private $linkedInManager;
 
   /**
    * Used to access GET parameters.
@@ -53,13 +53,13 @@ class LinkedinAuthController extends ControllerBase {
   private $dataHandler;
 
   /**
-   * LinkedinAuthController constructor.
+   * LinkedInAuthController constructor.
    *
    * @param \Drupal\social_api\Plugin\NetworkManager $network_manager
    *   Used to get an instance of social_auth_linkedin network plugin.
    * @param \Drupal\social_auth\SocialAuthUserManager $user_manager
    *   Manages user login/registration.
-   * @param \Drupal\social_auth_linkedin\LinkedinAuthManager $linkedin_manager
+   * @param \Drupal\social_auth_linkedin\LinkedInAuthManager $linkedin_manager
    *   Used to manage authentication methods.
    * @param \Symfony\Component\HttpFoundation\RequestStack $request
    *   Used to access GET parameters.
@@ -70,14 +70,14 @@ class LinkedinAuthController extends ControllerBase {
    */
   public function __construct(NetworkManager $network_manager,
                               SocialAuthUserManager $user_manager,
-                              LinkedinAuthManager $linkedin_manager,
+                              LinkedInAuthManager $linkedin_manager,
                               RequestStack $request,
                               SocialAuthDataHandler $data_handler,
                               LoggerChannelFactoryInterface $logger_factory) {
 
     $this->networkManager = $network_manager;
     $this->userManager = $user_manager;
-    $this->linkedinManager = $linkedin_manager;
+    $this->linkedInManager = $linkedin_manager;
     $this->request = $request;
     $this->dataHandler = $data_handler;
 
@@ -105,27 +105,27 @@ class LinkedinAuthController extends ControllerBase {
   /**
    * Response for path 'user/login/linkedin'.
    *
-   * Redirects the user to Linkedin for authentication.
+   * Redirects the user to LinkedIn for authentication.
    */
-  public function redirectToLinkedin() {
-    /* @var \League\OAuth2\Client\Provider\Linkedin false $linkedin */
+  public function redirectToLinkedIn() {
+    /* @var \League\OAuth2\Client\Provider\LinkedIn|false $linkedin */
     $linkedin = $this->networkManager->createInstance('social_auth_linkedin')->getSdk();
 
-    // If linkedin client could not be obtained.
+    // If LinkedIn client could not be obtained.
     if (!$linkedin) {
-      drupal_set_message($this->t('Social Auth Linkedin not configured properly. Contact site administrator.'), 'error');
+      drupal_set_message($this->t('Social Auth LinkedIn not configured properly. Contact site administrator.'), 'error');
       return $this->redirect('user.login');
     }
 
-    // Linkedin service was returned, inject it to $linkedinManager.
-    $this->linkedinManager->setClient($linkedin);
+    // LinkedIn service was returned, inject it to $linkedinManager.
+    $this->linkedInManager->setClient($linkedin);
 
-    // Generates the URL where the user will be redirected for Linkedin login.
+    // Generates the URL where the user will be redirected for LinkedIn login.
     // If the user did not have email permission granted on previous attempt,
     // we use the re-request URL requesting only the email address.
-    $linkedin_login_url = $this->linkedinManager->getLinkedinLoginUrl();
+    $linkedin_login_url = $this->linkedInManager->getLinkedInLoginUrl();
 
-    $state = $this->linkedinManager->getState();
+    $state = $this->linkedInManager->getState();
 
     $this->dataHandler->set('oauth2state', $state);
 
@@ -135,22 +135,22 @@ class LinkedinAuthController extends ControllerBase {
   /**
    * Response for path 'user/login/linkedin/callback'.
    *
-   * Linkedin returns the user here after user has authenticated in Linkedin.
+   * LinkedIn returns the user here after user has authenticated in LinkedIn.
    */
   public function callback() {
-    // Checks if user cancel login via Linkedin.
+    // Checks if user cancel login via LinkedIn.
     $error = $this->request->getCurrentRequest()->get('error');
     if ($error == 'access_denied') {
       drupal_set_message($this->t('You could not be authenticated.'), 'error');
       return $this->redirect('user.login');
     }
 
-    /* @var \League\OAuth2\Client\Provider\Linkedin false $linkedin */
+    /* @var \League\OAuth2\Client\Provider\LinkedIn|false $linkedin */
     $linkedin = $this->networkManager->createInstance('social_auth_linkedin')->getSdk();
 
-    // If Linkedin client could not be obtained.
+    // If LinkedIn client could not be obtained.
     if (!$linkedin) {
-      drupal_set_message($this->t('Social Auth Linkedin not configured properly. Contact site administrator.'), 'error');
+      drupal_set_message($this->t('Social Auth LinkedIn not configured properly. Contact site administrator.'), 'error');
       return $this->redirect('user.login');
     }
 
@@ -160,18 +160,18 @@ class LinkedinAuthController extends ControllerBase {
     $retrievedState = $this->request->getCurrentRequest()->query->get('state');
     if (empty($retrievedState) || ($retrievedState !== $state)) {
       $this->userManager->nullifySessionKeys();
-      drupal_set_message($this->t('Linkedin login failed. Unvalid OAuth2 State.'), 'error');
+      drupal_set_message($this->t('LinkedIn login failed. Unvalid OAuth2 State.'), 'error');
       return $this->redirect('user.login');
     }
 
     // Saves access token to session.
-    $this->dataHandler->set('access_token', $this->linkedinManager->getAccessToken());
+    $this->dataHandler->set('access_token', $this->linkedInManager->getAccessToken());
 
-    $this->linkedinManager->setClient($linkedin)->authenticate();
+    $this->linkedInManager->setClient($linkedin)->authenticate();
 
-    // Gets user's info from Linkedin API.
-    if (!$linkedin_profile = $this->linkedinManager->getUserInfo()) {
-      drupal_set_message($this->t('Linkedin login failed, could not load Linkedin profile. Contact site administrator.'), 'error');
+    // Gets user's info from LinkedIn API.
+    if (!$linkedin_profile = $this->linkedInManager->getUserInfo()) {
+      drupal_set_message($this->t('LinkedIn login failed, could not load LinkedIn profile. Contact site administrator.'), 'error');
       return $this->redirect('user.login');
     }
 
@@ -180,16 +180,16 @@ class LinkedinAuthController extends ControllerBase {
     $data = $linkedin_profile->toArray();
 
     if (!$this->userManager->checkIfUserExists($linkedin_profile->getId())) {
-      $api_calls = explode(PHP_EOL, $this->linkedinManager->getApiCalls());
+      $api_calls = explode(PHP_EOL, $this->linkedInManager->getApiCalls());
 
       // Iterate through api calls define in settings and try to retrieve them.
       foreach ($api_calls as $api_call) {
-        $call = $this->linkedinManager->getExtraDetails($api_call);
+        $call = $this->linkedInManager->getExtraDetails($api_call);
         array_push($data, $call);
       }
     }
     // If user information could be retrieved.
-    return $this->userManager->authenticateUser($linkedin_profile->getFirstName() . ' ' . $linkedin_profile->getLastName(), $linkedin_profile->getEmail(), $linkedin_profile->getId(), $this->linkedinManager->getAccessToken(), $linkedin_profile->getImageurl(), json_encode($data));
+    return $this->userManager->authenticateUser($linkedin_profile->getFirstName() . ' ' . $linkedin_profile->getLastName(), $linkedin_profile->getEmail(), $linkedin_profile->getId(), $this->linkedInManager->getAccessToken(), $linkedin_profile->getImageurl(), json_encode($data));
   }
 
 }

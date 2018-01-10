@@ -5,9 +5,9 @@ namespace Drupal\social_auth_linkedin\Settings;
 use Drupal\social_api\Settings\SettingsBase;
 
 /**
- * Defines methods to get Social Auth Linkedin settings.
+ * Defines methods to get Social Auth LinkedIn settings.
  */
-class LinkedinAuthSettings extends SettingsBase implements LinkedinAuthSettingsInterface {
+class LinkedInAuthSettings extends SettingsBase implements LinkedInAuthSettingsInterface {
 
   /**
    * Client ID.

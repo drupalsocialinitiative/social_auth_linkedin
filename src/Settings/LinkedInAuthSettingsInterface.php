@@ -3,9 +3,9 @@
 namespace Drupal\social_auth_linkedin\Settings;
 
 /**
- * Defines an interface for Social Auth Linkedin settings.
+ * Defines an interface for Social Auth LinkedIn settings.
  */
-interface LinkedinAuthSettingsInterface {
+interface LinkedInAuthSettingsInterface {
 
   /**
    * Gets the client ID.

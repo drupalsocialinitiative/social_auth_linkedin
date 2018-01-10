@@ -5,13 +5,13 @@ namespace Drupal\Tests\social_auth_linkedin\Functional;
 use Drupal\social_api\SocialApiSettingsFormBaseTest;
 
 /**
- * Test Social Auth LinkedIn module's settings forms.
+ * Test Social Auth LinkedIn settings form.
  *
  * @group social_auth
  *
  * @ingroup social_auth_linkedin
  */
-class SocialAuthLinkedinSettingsFormTest extends SocialApiSettingsFormBaseTest {
+class SocialAuthLinkedInSettingsFormTest extends SocialApiSettingsFormBaseTest {
   /**
    * Modules to enable.
    *
