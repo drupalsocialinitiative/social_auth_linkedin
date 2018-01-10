@@ -52,14 +52,6 @@ class LinkedinAuthController extends ControllerBase {
    */
   private $dataHandler;
 
-
-  /**
-   * The logger channel.
-   *
-   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
-   */
-  protected $loggerFactory;
-
   /**
    * LinkedinAuthController constructor.
    *
@@ -71,26 +63,29 @@ class LinkedinAuthController extends ControllerBase {
    *   Used to manage authentication methods.
    * @param \Symfony\Component\HttpFoundation\RequestStack $request
    *   Used to access GET parameters.
-   * @param \Drupal\social_auth\SocialAuthDataHandler $social_auth_data_handler
+   * @param \Drupal\social_auth\SocialAuthDataHandler $data_handler
    *   SocialAuthDataHandler object.
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
    *   Used for logging errors.
    */
-  public function __construct(NetworkManager $network_manager, SocialAuthUserManager $user_manager, LinkedinAuthManager $linkedin_manager, RequestStack $request, SocialAuthDataHandler $social_auth_data_handler, LoggerChannelFactoryInterface $logger_factory) {
+  public function __construct(NetworkManager $network_manager,
+                              SocialAuthUserManager $user_manager,
+                              LinkedinAuthManager $linkedin_manager,
+                              RequestStack $request,
+                              SocialAuthDataHandler $data_handler,
+                              LoggerChannelFactoryInterface $logger_factory) {
 
     $this->networkManager = $network_manager;
     $this->userManager = $user_manager;
     $this->linkedinManager = $linkedin_manager;
     $this->request = $request;
-    $this->dataHandler = $social_auth_data_handler;
-    $this->loggerFactory = $logger_factory;
+    $this->dataHandler = $data_handler;
 
     // Sets the plugin id.
     $this->userManager->setPluginId('social_auth_linkedin');
 
     // Sets the session keys to nullify if user could not logged in.
     $this->userManager->setSessionKeysToNullify(['access_token', 'oauth2state']);
-    $this->setting = $this->config('social_auth_linkedin.settings');
   }
 
   /**
@@ -102,7 +97,7 @@ class LinkedinAuthController extends ControllerBase {
       $container->get('social_auth.user_manager'),
       $container->get('social_auth_linkedin.manager'),
       $container->get('request_stack'),
-      $container->get('social_auth.social_auth_data_handler'),
+      $container->get('social_auth.data_handler'),
       $container->get('logger.factory')
     );
   }
