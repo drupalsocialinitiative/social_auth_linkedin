@@ -9,6 +9,7 @@ CONTENTS OF THIS FILE
  * Support requests
  * Maintainers
 
+
 INTRODUCTION
 ------------
 
@@ -17,8 +18,9 @@ based on the Social Auth and Social API projects
 
 It adds to the site:
  * A new url: /user/login/linkedin.
- * A settings form on /admin/config/social-api/social-auth/linkedin page.
+ * A settings form at /admin/config/social-api/social-auth/linkedin.
  * A LinkedIn logo in the Social Auth Login block.
+
 
 REQUIREMENTS
 ------------
@@ -28,17 +30,19 @@ This module requires the following modules:
  * Social Auth (https://drupal.org/project/social_auth)
  * Social API (https://drupal.org/project/social_api)
 
+
 INSTALLATION
 ------------
 
  * Run composer to install the dependencies:
-   composer require "drupal/social_auth_linkedin:~2.0"
+   composer require "drupal/social_auth_linkedin:^2.0"
 
  * Install the dependencies: Social API and Social Auth.
 
  * Install as you would normally install a contributed Drupal module. See:
    https://drupal.org/documentation/install/modules-themes/modules-8
    for further information.
+
 
 CONFIGURATION
 -------------
@@ -65,6 +69,7 @@ Drupal site. If we have an existing Drupal user with the same email address
 provided by LinkedIn, that user is logged in. Otherwise a new Drupal user is
 created.
 
+
 SUPPORT REQUESTS
 ----------------
 
@@ -75,11 +80,12 @@ Before posting a support request, check Recent log entries at
 admin/reports/dblog
 
 Once you have done this, you can post a support request at module issue queue:
-https://www.drupal.org/social_auth_linkedin/issues
+https://www.drupal.org/project/issues/social_auth_linkedin
 
 When posting a support request, please inform what does the status report say
 at admin/reports/dblog and if you were able to see any errors in
 Recent log entries.
+
 
 MAINTAINERS
 -----------
