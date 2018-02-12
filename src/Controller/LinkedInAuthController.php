@@ -123,7 +123,7 @@ class LinkedInAuthController extends ControllerBase {
     // Generates the URL where the user will be redirected for LinkedIn login.
     // If the user did not have email permission granted on previous attempt,
     // we use the re-request URL requesting only the email address.
-    $linkedin_login_url = $this->linkedInManager->getLinkedInLoginUrl();
+    $linkedin_login_url = $this->linkedInManager->getAuthorizationUrl();
 
     $state = $this->linkedInManager->getState();
 
@@ -140,7 +140,7 @@ class LinkedInAuthController extends ControllerBase {
   public function callback() {
     // Checks if user cancel login via LinkedIn.
     $error = $this->request->getCurrentRequest()->get('error');
-    if ($error == 'access_denied') {
+    if ($error == 'user_cancelled_login' || $error == 'user_cancelled_authorize') {
       drupal_set_message($this->t('You could not be authenticated.'), 'error');
       return $this->redirect('user.login');
     }
@@ -170,26 +170,16 @@ class LinkedInAuthController extends ControllerBase {
     $this->linkedInManager->setClient($linkedin)->authenticate();
 
     // Gets user's info from LinkedIn API.
-    if (!$linkedin_profile = $this->linkedInManager->getUserInfo()) {
+    if (!$profile = $this->linkedInManager->getUserInfo()) {
       drupal_set_message($this->t('LinkedIn login failed, could not load LinkedIn profile. Contact site administrator.'), 'error');
       return $this->redirect('user.login');
     }
 
-    // Store the data mapped with data points define is
-    // social_auth_linkedin settings.
-    $data = $linkedin_profile->toArray();
+    // Gets (or not) extra initial data.
+    $data = $this->userManager->checkIfUserExists($profile->getId()) ? NULL : $this->linkedInManager->getExtraDetails();
 
-    if (!$this->userManager->checkIfUserExists($linkedin_profile->getId())) {
-      $api_calls = explode(PHP_EOL, $this->linkedInManager->getApiCalls());
-
-      // Iterate through api calls define in settings and try to retrieve them.
-      foreach ($api_calls as $api_call) {
-        $call = $this->linkedInManager->getExtraDetails($api_call);
-        array_push($data, $call);
-      }
-    }
     // If user information could be retrieved.
-    return $this->userManager->authenticateUser($linkedin_profile->getFirstName() . ' ' . $linkedin_profile->getLastName(), $linkedin_profile->getEmail(), $linkedin_profile->getId(), $this->linkedInManager->getAccessToken(), $linkedin_profile->getImageurl(), json_encode($data));
+    return $this->userManager->authenticateUser($profile->getFirstName() . ' ' . $profile->getLastName(), $profile->getEmail(), $profile->getId(), $this->linkedInManager->getAccessToken(), $profile->getImageurl(), $data);
   }
 
 }

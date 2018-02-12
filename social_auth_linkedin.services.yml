@@ -2,8 +2,4 @@ services:
   social_auth_linkedin.manager:
     class: Drupal\social_auth_linkedin\LinkedInAuthManager
     arguments:
-      - '@logger.factory'
-      - '@event_dispatcher'
-      - '@entity_field.manager'
-      - '@url_generator.non_bubbling'
       - '@config.factory'
