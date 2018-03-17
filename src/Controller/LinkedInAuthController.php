@@ -121,8 +121,6 @@ class LinkedInAuthController extends ControllerBase {
     $this->linkedInManager->setClient($linkedin);
 
     // Generates the URL where the user will be redirected for LinkedIn login.
-    // If the user did not have email permission granted on previous attempt,
-    // we use the re-request URL requesting only the email address.
     $linkedin_login_url = $this->linkedInManager->getAuthorizationUrl();
 
     $state = $this->linkedInManager->getState();

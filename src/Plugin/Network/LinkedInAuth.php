@@ -143,16 +143,12 @@ class LinkedInAuth extends NetworkBase implements LinkedInAuthInterface {
         'clientId' => $settings->getClientId(),
         'clientSecret' => $settings->getClientSecret(),
         'redirectUri' => $this->requestContext->getCompleteBaseUrl() . '/user/login/linkedin/callback',
-        'accessType' => 'offline',
-        'verify' => FALSE,
       ];
 
       // Proxy configuration data for outward proxy.
-      $proxyUrl = $this->siteSettings->get("http_client_config")["proxy"]["http"];
+      $proxyUrl = $this->siteSettings->get('http_client_config')['proxy']['http'];
       if ($proxyUrl) {
-        $league_settings = [
-          'proxy' => $proxyUrl,
-        ];
+        $league_settings['proxy'] = $proxyUrl;
       }
 
       return new LinkedIn($league_settings);
