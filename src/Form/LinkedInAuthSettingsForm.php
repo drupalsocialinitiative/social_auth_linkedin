@@ -102,8 +102,8 @@ class LinkedInAuthSettingsForm extends SocialAuthSettingsForm {
     $form['linkedin_settings']['authorized_redirect_url'] = [
       '#type' => 'textfield',
       '#disabled' => TRUE,
-      '#title' => $this->t('Authorized redirect URIs'),
-      '#description' => $this->t('Copy this value to <em>Authorized redirect URIs</em> field of your LinkedIn App settings.'),
+      '#title' => $this->t('Authorized redirect URL'),
+      '#description' => $this->t('Copy this value to <em>Authorized Redirect URLs</em> field of your LinkedIn App settings.'),
       '#default_value' => $GLOBALS['base_url'] . '/user/login/linkedin/callback',
     ];
 
@@ -126,7 +126,7 @@ class LinkedInAuthSettingsForm extends SocialAuthSettingsForm {
       '#type' => 'textarea',
       '#title' => $this->t('API calls to be made to collect data'),
       '#default_value' => $config->get('endpoints'),
-      '#description' => $this->t('Define the Endpoints to be requested when user authenticates with Facebook for the first time<br>
+      '#description' => $this->t('Define the endpoints to be requested when user authenticates with LinkedIn for the first time<br>
                                   Enter each endpoint in different lines in the format <em>endpoint</em>|<em>name_of_endpoint</em>.<br>
                                   <b>For instance:</b><br>
                                   /v1/people/~:(num-connections)|connections_num'),
