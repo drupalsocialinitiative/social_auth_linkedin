@@ -120,7 +120,7 @@ class LinkedInAuthController extends ControllerBase {
     // LinkedIn service was returned, inject it to $linkedinManager.
     $this->linkedInManager->setClient($linkedin);
 
-    // Generates the URL where the user will be redirected for LinkedIn login.
+    // Generates the URL where the user will be redirected for authentication.
     $linkedin_login_url = $this->linkedInManager->getAuthorizationUrl();
 
     $state = $this->linkedInManager->getState();
@@ -162,10 +162,10 @@ class LinkedInAuthController extends ControllerBase {
       return $this->redirect('user.login');
     }
 
+    $this->linkedInManager->setClient($linkedin)->authenticate();
+
     // Saves access token to session.
     $this->dataHandler->set('access_token', $this->linkedInManager->getAccessToken());
-
-    $this->linkedInManager->setClient($linkedin)->authenticate();
 
     // Gets user's info from LinkedIn API.
     if (!$profile = $this->linkedInManager->getUserInfo()) {
