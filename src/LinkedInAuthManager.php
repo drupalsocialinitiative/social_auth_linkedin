@@ -6,7 +6,7 @@ use Drupal\social_auth\AuthManager\OAuth2Manager;
 use Drupal\Core\Config\ConfigFactory;
 
 /**
- * Contains all the logic for LinkedIn login integration.
+ * Contains all the logic for LinkedIn OAuth2 authentication.
  */
 class LinkedInAuthManager extends OAuth2Manager {
 
