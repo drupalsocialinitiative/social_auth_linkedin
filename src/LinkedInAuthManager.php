@@ -42,7 +42,10 @@ class LinkedInAuthManager extends OAuth2Manager {
    * {@inheritdoc}
    */
   public function getUserInfo() {
-    $this->user = $this->client->getResourceOwner($this->getAccessToken());
+    if (!$this->user) {
+      $this->user = $this->client->getResourceOwner($this->getAccessToken());
+    }
+
     return $this->user;
   }
 
