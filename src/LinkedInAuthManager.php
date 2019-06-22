@@ -74,7 +74,7 @@ class LinkedInAuthManager extends OAuth2Manager {
       $domain = 'https://api.linkedin.com';
     }
 
-    $url = $domain . $path . '?format=json';
+    $url = $domain . $path;
 
     $request = $this->client->getAuthenticatedRequest($method, $url, $this->getAccessToken(), $options);
 
