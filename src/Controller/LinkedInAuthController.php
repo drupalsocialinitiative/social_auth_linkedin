@@ -77,11 +77,10 @@ class LinkedInAuthController extends OAuth2ControllerBase {
    */
   public function callback() {
 
-    // Checks if authentication failed.
-    if ($this->request->getCurrentRequest()->query->has('error')) {
-      $this->messenger->addError($this->t('You could not be authenticated.'));
-
-      return $this->redirect('user.login');
+    // Checks if there was an authentication error.
+    $redirect = $this->checkAuthError();
+    if ($redirect) {
+      return $redirect;
     }
 
     /* @var \League\OAuth2\Client\Provider\LinkedInResourceOwner|null $profile */
@@ -97,7 +96,12 @@ class LinkedInAuthController extends OAuth2ControllerBase {
       $email = $this->providerManager->getEmail();
 
       // If user information could be retrieved.
-      return $this->userAuthenticator->authenticateUser($name, $email, $profile->getId(), $this->providerManager->getAccessToken(), $profile->getImageUrl(), $data);
+      return $this->userAuthenticator->authenticateUser($name,
+                                                        $email,
+                                                        $profile->getId(),
+                                                        $this->providerManager->getAccessToken(),
+                                                        $profile->getImageUrl(),
+                                                        $data);
     }
 
     return $this->redirect('user.login');
